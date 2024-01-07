@@ -66,7 +66,6 @@ const getNotes = () => {
       let data = JSON.parse(xhr.response);
       console.log("it s here");
       data.forEach((ele) => makeDivNote(ele.title, ele.noteBody, ele.dateOfCreation));
-      
     });
     xhr.addEventListener("error", () => {
       alert("error");
@@ -78,8 +77,7 @@ const getNotes = () => {
 const makeDivNote = (ti,bod,dat)=>{
         const randomRotation = (Math.random() - 0.5) * 100;
         const color = getRandomLightColor();
-        let p = document.createElement("p");
-        p.innerText = ti;
+
         let div = document.createElement("div");
         let texteria = document.createElement("textarea");
         let btn = document.createElement("button");
@@ -88,12 +86,11 @@ const makeDivNote = (ti,bod,dat)=>{
         div.style.transform = `rotate(${randomRotation}deg)`;
         texteria.setAttribute("disabled", true);
         texteria.style.backgroundColor = color;
-        texteria.value = bod;
+        texteria.value = ti + '\n' + bod + '\n' + dat;  
         btn.classList.add("delete");
         btn.textContent = "x";
         textContainer.classList.toggle("none");
         div.appendChild(texteria);
-        div.appendChild(p);
         notesContainer.appendChild(div);
     
     }
