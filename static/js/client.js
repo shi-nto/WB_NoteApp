@@ -44,11 +44,11 @@ submit.addEventListener('click', (event) => {
       }
     dataToSend = JSON.stringify(dataToSend);
     const xhr = new XMLHttpRequest();
-    xhr.open("post", url, false);
+    xhr.open("post", url, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.addEventListener("load", function () {
       let data = JSON.parse(xhr.responseText);
-      makeDivNote(); 
+      makeDivNote(data)
   });
 
 
@@ -65,7 +65,7 @@ const getNotes = () => {
       if (xhr.status != 200) return alert("errorthis is the erreur" + xhr.response);
       let data = JSON.parse(xhr.response);
       console.log("it s here");
-      data.forEach((ele) => makeDivNote(ele.title, ele.noteBody, ele.dateOfCreation));
+      data.forEach((ele) => makeDivNote(ele));
     });
     xhr.addEventListener("error", () => {
       alert("error");
@@ -74,7 +74,7 @@ const getNotes = () => {
 
 }
 
-const makeDivNote = (ti,bod,dat)=>{
+const makeDivNote = (data)=>{
         const randomRotation = (Math.random() - 0.5) * 100;
         const color = getRandomLightColor();
 
@@ -86,30 +86,26 @@ const makeDivNote = (ti,bod,dat)=>{
         div.style.transform = `rotate(${randomRotation}deg)`;
         texteria.setAttribute("disabled", true);
         texteria.style.backgroundColor = color;
-        texteria.value = ti + '\n' + bod + '\n' + dat;  
+        texteria.value = data.title + '\n' + data.noteBody + '\n' + data.dateOfCreation;  
         btn.classList.add("delete");
         btn.textContent = "x";
         textContainer.classList.toggle("none");
         div.appendChild(texteria);
+        div.appendChild(btn)
         notesContainer.appendChild(div);
+        btn.addEventListener('click', ()=>{
+         const xhr = new XMLHttpRequest();
+         xhr.open("delete", url + "/" + data.id, true);
+         xhr.addEventListener('load',()=>{
+            if (xhr.status != 200) return alert("error" + xhr.response);
+         })
+          xhr.send();
+        })
+      
     
     }
 
-function deleteNotes() {
-    let deleteNotesBtn = document.querySelectorAll(".delete");
-    deleteNotesBtn.forEach(function (button) {
-        button.addEventListener('click', (event) => {
-            event.target.parentElement.remove();
-            let taskText = event.target.parentElement.querySelector('textarea').value.trim();
-            let index = tasks.indexOf(taskText);
-            if (index !== -1) {
-                tasks.splice(index, 1);
-                // Save tasks to local storage
-                localStorage.setItem('tasks', JSON.stringify(tasks));
-            }
-            });
-    });
-}
+
 
 getNotes();
 
