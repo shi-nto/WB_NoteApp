@@ -81,6 +81,7 @@ const makeDivNote = (data)=>{
         let div = document.createElement("div");
         let texteria = document.createElement("textarea");
         let btn = document.createElement("button");
+        let btn2 = document.createElement("button");
 
         div.classList.add("box-container");
         div.style.transform = `rotate(${randomRotation}deg)`;
@@ -88,11 +89,44 @@ const makeDivNote = (data)=>{
         texteria.style.backgroundColor = color;
         texteria.value = data.title + '\n' + data.noteBody + '\n' + data.dateOfCreation;  
         btn.classList.add("delete");
+        btn.classList.add("delete");
+        btn2.textContent = "edit";
         btn.textContent = "x";
         textContainer.classList.toggle("none");
         div.appendChild(texteria);
         div.appendChild(btn)
+        div.appendChild(btn2);
         notesContainer.appendChild(div);
+        btn2.addEventListener('click', ()=>{
+            texteria.removeAttribute("disabled");
+            texteria.style.backgroundColor = "white";
+            texteria.style.color = "black";
+            texteria.style.border = "1px solid black";
+            btn2.textContent = "save";
+            btn2.addEventListener('click', ()=>{
+                texteria.setAttribute("disabled", true);
+                texteria.style.backgroundColor = color;
+                texteria.style.color = "white";
+                texteria.style.border = "none";
+                btn2.textContent = "edit";
+                let dataToSend = {
+                    "title":h4.value,
+                    "body":textareaValue.value
+                  }
+                dataToSend = JSON.stringify(dataToSend);
+                const xhr = new XMLHttpRequest();
+                xhr.open("put", url + "/" + data.id, true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.addEventListener("load", function () {
+                  let data = JSON.parse(xhr.responseText);
+                  makeDivNote();
+              });
+            
+            
+              xhr.send(dataToSend);
+            })
+        
+        })
         btn.addEventListener('click', ()=>{
          const xhr = new XMLHttpRequest();
          xhr.open("delete", url + "/" + data.id, true);
