@@ -100,6 +100,7 @@ const makeDivNote = (data)=>{
             if (xhr.status != 200) return alert("error" + xhr.response);
          })
           xhr.send();
+          div.remove();
         })
       
     
