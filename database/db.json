@@ -19,13 +19,11 @@
       "noteBody": "this a note for testing the post path"
     },
     {
-      "id": 4,
-      "dateOfCreation": "2024-1-7"
-    },
-    {
-      "id": 5,
-      "dateOfCreation": "2024-1-7"
+      "id": 6,
+      "title": "aymanox",
+      "dateOfCreation": "2024-1-7",
+      "noteBody": "otadayo  fbrojnfdsf"
     }
   ],
-  "lastId": 6
+  "lastId": 7
 }
