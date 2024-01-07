@@ -1,0 +1,13 @@
+{
+   "Note":
+   [
+    {
+        "id": "1",
+        "title": "Note 1",
+        "description": "Description 1",
+        "date": "2017-01-01",
+        "lines": ["Hello brother how are you", "I am fine", "How are you doing", "I am doing good"]
+    }
+   ],
+   "id_counter":2
+}
