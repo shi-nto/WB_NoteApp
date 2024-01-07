@@ -56,10 +56,30 @@ submit.addEventListener('click', (event) => {
            
 })
 
-const makeDivNote = ()=>{
-    if (textareaValue.value != "") {
+const getNotes = () => {
+    console.log("Hellooodofsdf");
+    notesContainer.innerHTML = "";
+    const xhr = new XMLHttpRequest();
+    xhr.open("get", url, true);
+    xhr.addEventListener("load", () => {
+      if (xhr.status != 200) return alert("errorthis is the erreur" + xhr.response);
+      let data = JSON.parse(xhr.response);
+      console.log("it s here");
+      data.forEach((ele) => makeDivNote(ele.title, ele.noteBody, ele.dateOfCreation));
+      
+    });
+    xhr.addEventListener("error", () => {
+      alert("error");
+    });
+    xhr.send();    
+
+}
+
+const makeDivNote = (ti,bod,dat)=>{
         const randomRotation = (Math.random() - 0.5) * 100;
         const color = getRandomLightColor();
+        let p = document.createElement("p");
+        p.innerText = ti;
         let div = document.createElement("div");
         let texteria = document.createElement("textarea");
         let btn = document.createElement("button");
@@ -68,14 +88,15 @@ const makeDivNote = ()=>{
         div.style.transform = `rotate(${randomRotation}deg)`;
         texteria.setAttribute("disabled", true);
         texteria.style.backgroundColor = color;
-        texteria.value = textareaValue.value;
+        texteria.value = bod;
         btn.classList.add("delete");
         btn.textContent = "x";
         textContainer.classList.toggle("none");
         div.appendChild(texteria);
+        div.appendChild(p);
         notesContainer.appendChild(div);
+    
     }
-}
 
 function deleteNotes() {
     let deleteNotesBtn = document.querySelectorAll(".delete");
@@ -93,7 +114,7 @@ function deleteNotes() {
     });
 }
 
-
+getNotes();
 
 /*
 submit.addEventListener('click', (e) => {
