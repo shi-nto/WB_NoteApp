@@ -1,12 +1,17 @@
-
 {
-   "Note":
-   [
+  "Notes":[
     {
-        "id": "1",
-        "title": "Note 1",
-        "body": "Hello i am nod  d fsj"
+      "id":1,
+      "title":"note 1",
+      "dateOfCreation":"2017-01-01",
+      "noteBody":"this is the first note..."
+    },
+    {
+      "id":2,
+      "title":"note adib 3",
+      "dateOfCreation":"2017-02-01",
+      "noteBody":"this is a note..."
     }
-   ],
-   "id_counter":2
+  ],
+  "lastId":2
 }
