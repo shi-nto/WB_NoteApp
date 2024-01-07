@@ -1,6 +1,6 @@
 const express = require('express');
 const fs = require('fs');
-const { verifyNote } = require('./controller')
+const { verifyNote , verifyPathId } = require('./controller')
 const PORT = 3000;
 const app = express();
 
@@ -47,6 +47,38 @@ app.post('/notes' , verifyNote ,(req , res) => {
         return res.status(500).json({msg : "error will writing on the server"})
 
       res.status(201).json(noteToSave)
+    })
+  })
+})
+
+app.delete('/notes/:id', verifyPathId ,(req , res) => {
+  console.log('delete');
+  const id = req.params.id;
+  console.log(id);
+
+  fs.readFile('./database/db.json' , (err , data) => {
+    if(err)
+      return console.log(err)
+
+    let notesInfo = JSON.parse(data);
+    let notesData = notesInfo.Notes;
+    const noteToDelete = notesData.findIndex((note) => note.id == id );
+    console.log(noteToDelete);
+
+    if(noteToDelete === -1)
+      return res.status(404).json({msg : "note not found"})
+
+    let notesToSave = notesData.filter((note) => {
+      return note.id != id
+    })
+    
+    console.log(notesToSave);
+    notesInfo.Notes = notesToSave;
+    fs.writeFile('./database/db.json' , JSON.stringify(notesInfo , null , 2) , (err) => {
+      if(err)
+        return res.status(500).json({msg : "error will writing on the server"})
+
+      res.status(200).json({msg : "note was deleted"})
     })
   })
 })

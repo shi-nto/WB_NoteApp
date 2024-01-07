@@ -8,6 +8,17 @@ const verifyNote = (req , res , next) => {
   next()
 }
 
+const verifyPathId = (req , res , next) => {
+  const id = req.params;
+  if(!isNaN(id))
+    return res.status(404).json({
+      msg: "please provide a valide id"
+    })
+  
+  next()
+}
+
 module.exports = {
   verifyNote,
+  verifyPathId
 }
