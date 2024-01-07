@@ -5,8 +5,8 @@ const addNoteBtn = document.querySelector("#addNotes")
 const notesContainer = document.querySelector(".notes-container");
 const boxContainer = document.querySelector(".box-container")
 const textContainer = document.querySelector(".containers")
+let h4 = document.getElementById("hd")
 let textareaValue = textContainer.querySelector('#note-text');
-const h4 = document.getElementById("hd")
 const url = "http://localhost:3000/notes"
 addNoteBtn.addEventListener('click', () => {
     textareaValue.value = "";
@@ -109,9 +109,11 @@ const makeDivNote = (data)=>{
                 texteria.style.color = "white";
                 texteria.style.border = "none";
                 btn2.textContent = "edit";
+                let dat = textareaValue.value;
+                let io = dat.split('\n');
                 let dataToSend = {
-                    "title":h4.value,
-                    "body":textareaValue.value
+                    "title":io[0],
+                    "body":io[1],
                   }
                 dataToSend = JSON.stringify(dataToSend);
                 const xhr = new XMLHttpRequest();
@@ -119,9 +121,8 @@ const makeDivNote = (data)=>{
                 xhr.setRequestHeader("Content-Type", "application/json");
                 xhr.addEventListener("load", function () {
                   let data = JSON.parse(xhr.responseText);
-                  makeDivNote();
+                  console.log(data);
               });
-            
             
               xhr.send(dataToSend);
             })
@@ -143,25 +144,3 @@ const makeDivNote = (data)=>{
 
 
 getNotes();
-
-/*
-submit.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (textareaValue.value != "") {
-        if (textareaValue.value != "") {
-            normal long old code
-            let boxContainer = document.createElement('div');
-            boxContainer.classList.add('box-container')
-            let createNotes = document.createElement('textarea')
-            createNotes.value = textareaValue.value;
-            createNotes.setAttribute('disabled', true);
-            let deletebtn = document.createElement('button');
-            deletebtn.setAttribute("id", "delete");
-            deletebtn.textContent = "x";
-            notesContainer.appendChild(boxContainer);
-            boxContainer.appendChild(createNotes);
-            boxContainer.appendChild(deletebtn);
-            textContainer.classList.toggle("none")
-        }
-    }
-})*/
