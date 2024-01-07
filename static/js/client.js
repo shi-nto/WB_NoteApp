@@ -36,24 +36,24 @@ function getRandomLightColor() {
 
 submit.addEventListener('click', (event) => {
     event.preventDefault();
-    console.log(h4.value);
+    let title = h4.value;
+    let body = textareaValue.value;
+    let dataToSend = {
+        "title":h4.value,
+        "body":textareaValue.value
+      }
+    dataToSend = JSON.stringify(dataToSend);
     const xhr = new XMLHttpRequest();
-    xhr.open("post", url, true);
+    xhr.open("post", url, false);
+    xhr.setRequestHeader("Content-Type", "application/json");
     xhr.addEventListener("load", function () {
-    if (xhr.status == 200) {
-        console.log("success");
-    } else {
-      console.log("error");
-    }
+      let data = JSON.parse(xhr.responseText);
+      makeDivNote(); 
   });
-  let dataToSend = {
-    "title":h4.value,
-    "noteBody":textareaValue.value
-  }
-  console.log(dataToSend);
+
+
   xhr.send(dataToSend);
-   //  
-   makeDivNote();          
+           
 })
 
 const makeDivNote = ()=>{

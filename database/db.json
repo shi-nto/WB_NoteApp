@@ -17,7 +17,15 @@
       "title": "adib post test",
       "dateOfCreation": "2024-1-7",
       "noteBody": "this a note for testing the post path"
+    },
+    {
+      "id": 4,
+      "dateOfCreation": "2024-1-7"
+    },
+    {
+      "id": 5,
+      "dateOfCreation": "2024-1-7"
     }
   ],
-  "lastId": 4
+  "lastId": 6
 }
