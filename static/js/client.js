@@ -6,15 +6,13 @@ const notesContainer = document.querySelector(".notes-container");
 const boxContainer = document.querySelector(".box-container")
 const textContainer = document.querySelector(".containers")
 let textareaValue = textContainer.querySelector('#note-text');
-let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-
+const h4 = document.getElementById("hd")
+const url = "http://localhost:3000/notes"
 addNoteBtn.addEventListener('click', () => {
     textareaValue.value = "";
     textContainer.classList.toggle("none")
 })
 empty.addEventListener('click', (e) => {
-    e.preventDefault();
-
     textareaValue.value = "";
 })
 function getRandomLightColor() {
@@ -36,23 +34,48 @@ function getRandomLightColor() {
     return color;
 }
 
-submit.addEventListener('click', (e) => {
-    e.preventDefault();
-        if (textareaValue.value != "") {
-            const randomRotation = (Math.random() - 0.5) * 100;
-            const color = getRandomLightColor();
-
-            notesContainer.innerHTML +=
-                `<div class="box-container" style="transform: rotate(${randomRotation}deg);">
-            <textarea disabled style="background-color:${color};">${textareaValue.value}</textarea>
-            <button class="delete">x</button>
-        </div>`;
-            tasks.push(textareaValue.value);
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-            textContainer.classList.toggle("none");
-            deleteNotes();//if i call the function outside the box then all buttons value is null thats why i call this funciton inside the submit 
-        }
+submit.addEventListener('click', (event) => {
+    event.preventDefault();
+    console.log(h4.value);
+    const xhr = new XMLHttpRequest();
+    xhr.open("post", url, true);
+    xhr.addEventListener("load", function () {
+    if (xhr.status == 200) {
+        console.log("success");
+    } else {
+      console.log("error");
+    }
+  });
+  let dataToSend = {
+    "title":h4.value,
+    "noteBody":textareaValue.value
+  }
+  console.log(dataToSend);
+  xhr.send(dataToSend);
+   //  
+   makeDivNote();          
 })
+
+const makeDivNote = ()=>{
+    if (textareaValue.value != "") {
+        const randomRotation = (Math.random() - 0.5) * 100;
+        const color = getRandomLightColor();
+        let div = document.createElement("div");
+        let texteria = document.createElement("textarea");
+        let btn = document.createElement("button");
+
+        div.classList.add("box-container");
+        div.style.transform = `rotate(${randomRotation}deg)`;
+        texteria.setAttribute("disabled", true);
+        texteria.style.backgroundColor = color;
+        texteria.value = textareaValue.value;
+        btn.classList.add("delete");
+        btn.textContent = "x";
+        textContainer.classList.toggle("none");
+        div.appendChild(texteria);
+        notesContainer.appendChild(div);
+    }
+}
 
 function deleteNotes() {
     let deleteNotesBtn = document.querySelectorAll(".delete");
@@ -70,19 +93,7 @@ function deleteNotes() {
     });
 }
 
-function loadTasks() {
-    tasks.forEach(function (notes) {
-        const randomRotation = (Math.random() - 0.5) * 100;
-        const color = getRandomLightColor();
-        notesContainer.innerHTML +=
-            `<div class="box-container" style="transform: rotate(${randomRotation}deg);">
-        <textarea disabled style="background-color:${color};">${notes}</textarea>
-        <button class="delete">x</button>
-    </div>`
-        deleteNotes()
-    });
-}
-loadTasks();
+
 
 /*
 submit.addEventListener('click', (e) => {
