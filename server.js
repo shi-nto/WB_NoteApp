@@ -1,5 +1,6 @@
 const express = require('express');
 const fs = require('fs');
+const { verifyNote } = require('./controller')
 const PORT = 3000;
 const app = express();
 
@@ -19,6 +20,35 @@ app.get('/notes' , (req , res) => {
     return res.status(500).json({msg : 'error on the server'})
 
   res.status(200).json(notes)
+})
+
+app.post('/notes' , verifyNote ,(req , res) => {
+  const {title , body} = req.body;
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const dateToSave = [year, month, day].join('-');
+  fs.readFile('./database/db.json' , (err , data) => {
+    if(err)
+      return console.log(err)
+
+    let notesInfo = JSON.parse(data);
+    let noteToSave = {
+      id: notesInfo.lastId,
+      title,
+      dateOfCreation: dateToSave,
+      noteBody: body
+    }
+    notesInfo.Notes.push(noteToSave);
+    notesInfo.lastId++;
+    fs.writeFile('./database/db.json' , JSON.stringify(notesInfo , null , 2) , (err) => {
+      if(err)
+        return res.status(500).json({msg : "error will writing on the server"})
+
+      res.status(201).json(noteToSave)
+    })
+  })
 })
 
 app.listen(PORT , () => {
