@@ -3,7 +3,7 @@ const fs = require('fs');
 const { verifyNote , verifyPathId } = require('./controller')
 const PORT = 3000;
 const app = express();
-
+//
 app.use(express.static('./static'))
 app.use(express.json())
 let notes = [];
